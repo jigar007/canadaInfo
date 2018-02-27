@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "MainTableViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,16 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    MainTableViewController *obj_factViewController = [[MainTableViewController alloc] init];
+    
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:obj_factViewController];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    
+    self.window.rootViewController = self.navigationController;
+    [self.window makeKeyAndVisible];
+    return YES;
     // Override point for customization after application launch.
     return YES;
 }
@@ -46,6 +57,21 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+- (void)displayAnAlertWith:(NSString *)title andMessage:(NSString *)message {
+    if (@available(iOS 9.0, *)) {
+        UIAlertController *alertController = [[UIAlertController alloc] init];
+        [alertController setTitle:title];
+        [alertController setMessage:message];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [alertController dismissViewControllerAnimated:TRUE completion:nil];
+        }]];
+        [self.window.rootViewController presentViewController:alertController animated:TRUE completion:nil];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    }
+}
+
 
 
 @end
